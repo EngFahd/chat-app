@@ -69,15 +69,22 @@ class LoginView extends StatelessWidget {
               content: "Login",
               onTap: () {
                 if (formKey.currentState!.validate()) {
-                  FirebaseFunctions()
-                      .signInUser(userEmail: email, userPassword: password);
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      duration: Duration(milliseconds: 500),
-                      content: Text("Login Success")));
+                  try {
+                    FirebaseFunctions()
+                        .signInUser(userEmail: email, userPassword: password);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        duration: Duration(milliseconds: 500),
+                        content: Text("Login Success")));
 
-                  Future.delayed(const Duration(seconds: 1), () {
-                    Navigator.pushNamed(context, ChatView.id, arguments: email);
-                  });
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Navigator.pushNamed(context, ChatView.id,
+                          arguments: email);
+                    });
+                  } on Exception catch (e) {
+                   throw ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        duration: Duration(milliseconds: 500),
+                        content: Text("some error hapen")));
+                  }
                 }
               },
             ),

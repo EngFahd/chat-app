@@ -65,14 +65,22 @@ class RegisterView extends StatelessWidget {
               content: "Register",
               onTap: () {
                 if (formKey.currentState!.validate()) {
-                  FirebaseFunctions()
-                      .createUser(email: email, password: password);
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      duration: Duration(milliseconds: 500),
-                      content: Text("Created account Success")));
-                  Future.delayed(const Duration(seconds: 1), () {
-                    Navigator.pushNamed(context, ChatView.id, arguments: email);
-                  });
+                  try {
+                    FirebaseFunctions()
+                        .createUser(email: email, password: password);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        duration: Duration(milliseconds: 500),
+                        content: Text("Created account Success")));
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Navigator.pushNamed(context, ChatView.id,
+                          arguments: email);
+                    });
+                  } on Exception catch (e) {
+                    throw ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            duration: Duration(milliseconds: 500),
+                            content: Text("some error hapen")));
+                  }
                 }
               },
             ),

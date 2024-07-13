@@ -12,12 +12,12 @@ class FirebaseFunctions {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        log('The password provided is too weak.');
+        return('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        log('The account already exists for that email.');
+        return('The account already exists for that email.');
       }
     } catch (e) {
-      log(e.toString());
+      return(e.toString());
     }
   }
 
@@ -27,9 +27,9 @@ class FirebaseFunctions {
           .signInWithEmailAndPassword(email: userEmail, password: userPassword);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        log('No user found for that email.');
+        return('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        log('Wrong password provided for that user.');
+        return('Wrong password provided for that user.');
       }
     }
   }
